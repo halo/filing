@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.expand_path('../lib', __dir__)
+require 'filing'
+
+begin
+  Filing::Convertify::Command.new.call
+rescue Interrupt
+  exit 99
+end
