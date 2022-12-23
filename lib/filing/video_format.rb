@@ -6,7 +6,8 @@ module Filing
     end
 
     def mpeg1?
-      exif[:compressor_id] == 'mp1v'
+      exif[:compressor_id] == 'mp1v' ||
+        exif[:mpeg_audio_version] == 1
     end
 
     def mpeg4?
