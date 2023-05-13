@@ -10,6 +10,10 @@ module Filing
         exif[:mpeg_audio_version] == 1
     end
 
+    def avc?
+      exif[:compressor_id] == 'avc1'
+    end
+
     def mpeg4?
       exif[:compressor_id] == 'mp4v'
     end

@@ -10,8 +10,8 @@ module Filing
 
         format = Filing::VideoFormat.new(path)
 
-        unless format.h264? || format.mpeg1? || format.mpeg4?
-          Filing.debug "Needs no conversion."
+        unless format.h264? || format.mpeg1? || format.mpeg4? || format.avc?
+          Filing.debug "Needs no conversion"
           return :skip
         end
 
