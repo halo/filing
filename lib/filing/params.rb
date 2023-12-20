@@ -3,24 +3,45 @@ module Filing
     include TTY::Option
 
     def self.hot?
-      new.parse.params[:hot]
+      parse.params[:hot]
     end
 
     def self.problems?
-      new.parse.params[:problems]
+      parse.params[:problems]
     end
 
     def self.verbose?
-      new.parse.params[:verbose]
+      parse.params[:verbose]
     end
 
     def self.step?
-      new.parse.params[:step]
+      parse.params[:step]
     end
 
     def self.year
-      new.parse.params[:year]
+      parse.params[:year]
     end
+
+    def self.paths
+      parse.params[:paths]
+    end
+
+    def self.pathnames
+      candidates = Array(paths).map { ::Pathname.new(_1).expand_path }
+      return candidates if candidates.all?(&:file?)
+
+      missing_path = candidates.detect { !_1.file? }
+      TTY::Prompt.new.error("File not found: #{missing_path}")
+      exit 4
+    end
+
+    def self.parse
+      new.parse(raise_on_parse_error: true)
+    rescue TTY::Option::InvalidParameter, TTY::Option::InvalidArity => ex
+      TTY::Prompt.new.error(ex.message)
+      exit 2
+    end
+    private_class_method :parse
 
     flag :hot do
       long '--hot'
@@ -45,6 +66,12 @@ module Filing
     option :year do
       long "--year int"
       desc "A reference year to cross-reference time metadata"
+    end
+
+    argument :paths do
+      optional
+      arity :any
+      desc "Path to a file"
     end
   end
 end

@@ -22,6 +22,10 @@ module Filing
       exif[:compressor_name] == 'H.264'
     end
 
+    def h265?
+      exif[:compressor_id] == 'hvc1'
+    end
+
     def to_h
       exif.to_hash
     end
