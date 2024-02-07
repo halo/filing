@@ -15,7 +15,7 @@ module Filing
           return :skip
         end
 
-        Processes::ShrinkVideo.call(path)
+        Processes::ShrinkVideo.call(path, format:)
       end
     end
   end

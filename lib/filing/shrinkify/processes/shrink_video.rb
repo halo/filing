@@ -9,6 +9,7 @@ module Filing
         end
 
         param :path
+        option :format
 
         def call
           return unless do_generate_output_file
@@ -85,7 +86,7 @@ module Filing
           result.push '-vtag'
           result.push 'hvc1'
           result.push '-vf'
-          result.push 'scale=960:-1'
+          result.push scale_ratio
           result.push temporary_path.to_s
           result
         end
@@ -100,6 +101,14 @@ module Filing
 
         def trash_path
           Pathname.new("/tmp/filing/#{Filing.execution_id}").join(path.to_s[1..])
+        end
+
+        def scale_ratio
+          if format.portrait?
+            'scale=960:-1'
+          else
+            'scale=-1:960'
+          end
         end
       end
     end

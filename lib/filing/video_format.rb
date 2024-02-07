@@ -30,6 +30,17 @@ module Filing
       exif.to_hash
     end
 
+    def portrait?
+      width = exif[:image_width].to_i
+      height = exif[:image_height].to_i
+
+      if exif[:rotation].abs == 90
+        height > width
+      else
+        width > height
+      end
+    end
+
     private
 
     attr_reader :path
